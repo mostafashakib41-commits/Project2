@@ -1,0 +1,691 @@
+ex-1: Write a program to scan and count the number of characters, words, and lines in a file
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ifstream file("input1.txt");
+
+    if (!file) {
+        cout << "File could not be opened." << endl;
+        return 1;
+    }
+
+    string line;
+    int char_count = 0, word_count = 0, line_count = 0;
+
+    while (getline(file, line)) {
+        line_count++;
+
+        char_count += line.length() + 1;
+
+        stringstream ss(line);
+        string word;
+        while (ss >> word) {
+            word_count++;
+        }
+    }
+
+    cout << "Characters: " << char_count << endl;
+    cout << "Words: " << word_count << endl;
+    cout << "Lines: " << line_count << endl;
+
+    file.close();
+    return 0;
+}
+
+
+ex-2: Write a program to identify whether a given line is a comment or not.
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    ifstream file("input2.txt");
+    if (!file) {
+        cout << "Error: Cannot open input.txt" << endl;
+        return 1;
+    }
+    string line;
+    int lineNum = 0;
+    int commentCount = 0;
+    int notCommentCount = 0;
+
+    while (getline(file, line)) {
+        lineNum++;
+
+        if (line[0] == '/' && line[1] == '/') {
+            cout << "Line " << lineNum << " : COMMENT" << endl;
+            commentCount++;
+        }
+        else if (line[0] == '/' && line[1] == '*') {
+            cout << "Line " << lineNum << " : COMMENT" << endl;
+            commentCount++;
+        }
+        else if (line[0] == '#') {
+            cout << "Line " << lineNum << " : COMMENT" << endl;
+            commentCount++;
+        }
+        else {
+            cout << "Line " << lineNum << " : NOT A COMMENT" << endl;
+            notCommentCount++;
+        }
+    }
+    file.close();
+    cout << "\n--- Summary ---" << endl;
+    cout << "Total Lines       : " << lineNum        << endl;
+    cout << "Comment Lines     : " << commentCount    << endl;
+    cout << "Non-Comment Lines : " << notCommentCount << endl;
+
+    return 0;
+}
+
+
+ex-3: Write a program to test whether a given identifier is valid or not.
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool isValid(string id) {
+    if (id.empty()) return false;
+
+    if (!isalpha(id[0]) && id[0] != '_') return false;
+
+    for (int i = 1; i < id.size(); i++) {
+        if (!isalpha(id[i]) && !isdigit(id[i]) && id[i] != '_') {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int main() {
+    ifstream file("input3.txt");
+
+    if (!file) {
+        cout << "Error: Cannot open input.txt" << endl;
+        return 1;
+    }
+
+    string id;
+    int lineNum = 0;
+    int validCount = 0;
+    int invalidCount = 0;
+
+    while (getline(file, id)) {
+        lineNum++;
+
+        if (isValid(id)) {
+            cout << "Line " << lineNum << " : " << id << " --> VALID" << endl;
+            validCount++;
+        } else {
+            cout << "Line " << lineNum << " : " << id << " --> INVALID" << endl;
+            invalidCount++;
+        }
+    }
+
+    file.close();
+
+    cout << "\n--- Summary ---" << endl;
+    cout << "Total Identifiers   : " << lineNum      << endl;
+    cout << "Valid Identifiers   : " << validCount   << endl;
+    cout << "Invalid Identifiers : " << invalidCount << endl;
+
+    return 0;
+}
+
+
+
+
+
+experiment 5: to recongnize strings under the pattern a,a*b+,abb
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool aaa(string s){
+int i=0;
+while(i<s.size() && s[i]=='a'){ i++; }
+
+if(i==s.size() || s[i]!='b'){ return false;}
+
+while(i<s.size() && s[i]=='b'){ i++;}
+
+if(i==s.size()){ return true;}else{return false;}
+}
+
+
+int main(){
+string s1;
+cin>> s1;
+
+bool f1=false,f2=false,f3=false;
+
+if(s1=="a"){
+  f1=true;
+}
+
+if(aaa(s1)){
+   f2=true;
+}
+
+if(s1=="abb"){
+ f3=true;
+}
+
+
+if(!f1 && !f2 && !f3){
+cout<<"No match"<<endl;
+}
+
+if(f1){ cout<<"the sting is:" <<s1<<endl;}
+
+if(f2){ cout<<"the string is:(a*b+)"<<endl;}
+
+if(f3){ cout<<"the string is:"<<s1<<endl;}
+
+}
+
+Experiment 6: to simulate a lexical analyzer for validating operators.
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string op;
+    cout << "Enter a operator: ";
+    cin >> op;
+
+    string operators[] = {"+", "-", "*", "/", "%", 
+                        "==", "!=", ">", "<", ">=", "<=", 
+                        "&&", "||", "!", "=", 
+                        "|", "&", "~", "^",
+                        "++", "--"}; 
+    string name[] = {"addition", "subtraction", "multiplication", "division", "modulus", 
+                    "equal to", "not equal to", "greater than", "less than",  "greater or equal than", "less or equal than",
+                    "and", "or", "not", "assignment",
+                    "logical or", "logical and", "negation", "xor",
+                    "increment", "decrement"};
+    bool f = false;
+
+    int i = 0;
+    for(string s : operators) {
+        if(s == op) {
+            f = true;
+            break;
+        }
+        i++;
+    }
+
+    if(f) {
+        cout << op << " is " << name[i] << " operator";
+    } else {
+        cout << op << " is not a valid operator";
+    }
+}
+
+
+
+ex-7: Write a program to count the number of operators in a given string
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() 
+{
+    cout << "Enter the input string: " << endl;
+    string s;
+    getline(cin, s);
+
+    vector<string> ops = {"+", "-", "*", "/", "%", 
+                          "==", "!=", ">", "<", ">=", "<=", 
+                          "&&", "||", "!", "=", 
+                          "|", "&", "~", "^",
+                          "++", "--"};
+
+    sort(ops.begin(), ops.end(), [](string &a, string &b){
+        return a.size() > b.size();
+    });
+
+    unordered_map<string,int> counts;
+    int total = 0;
+    for (int i = 0; i < s.size();) {
+        bool matched = false;
+        for (auto &op : ops) {
+            if (i + op.size() <= s.size() && s.compare(i, op.size(), op) == 0) {
+                counts[op]++;
+                total++;
+                i += op.size();
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) ++i;
+    }
+
+    cout << "Total operators found: " << total << endl;
+    for (auto &op : ops) {
+        if (counts[op] > 0)
+            cout << "'" << op << "' : " << counts[op] << endl;
+    }
+    return 0;
+}
+
+
+
+ex-8: Write a program to implement NFA that recognizes identifiers.
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string input;
+    cout << "Enter a string: ";
+    cin >> input;
+    int state = 0;
+
+    for (char ch : input) {
+        if (state == 0) {
+            if (isalpha(ch) || ch == '_')
+                state = 1;
+            else {
+                state = -1;
+                break;
+            }
+        }
+        else if (state == 1) {
+            if (isalnum(ch) || ch == '_')
+                state = 1;
+            else {
+                state = -1;
+                break;
+            }
+        }
+    }
+    if (state == 1)
+        cout << "Valid Identifier" << endl;
+    else
+        cout << "Invalid Identifier" << endl;
+    return 0;
+}
+
+
+
+EX-9: 9. WRITE A PROGRAM TO IMPLEMENT DFA THAT RECOGNIZES IDENTIFIERS, CONSTANTS, AND OPERATORS.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    string input;
+    cout << "Enter input: ";
+    cin >> input;
+    int state = 0;
+
+    for (char ch : input) {
+        if (state == 0) {
+            if (isalpha(ch) || ch == '_')
+                state = 1;
+            else if (isdigit(ch))
+                state = 2;
+            else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' ||
+                     ch == '=' || ch == '<' || ch == '>')
+                state = 3;
+            else
+                state = -1;
+        }
+        else if (state == 1) {
+            if (isalnum(ch) || ch == '_')
+                state = 1;
+            else
+                state = -1;
+        }
+        else if (state == 2) {
+            if (isdigit(ch))
+                state = 2;
+            else
+                state = -1;
+        }
+        else if (state == 3) {
+            state = -1;
+        }
+
+        if (state == -1)
+            break;
+    }
+
+    if (state == 1)
+        cout << "Identifier\n";
+    else if (state == 2)
+        cout << "Constant\n";
+    else if (state == 3)
+        cout << "Operator\n";
+    else
+        cout << "Invalid token\n";
+
+    return 0;
+}
+
+
+ex-10: Write a program to design a lexical analyzer that ignores spaces, tabs, new lines, and comments.
+
+
+ex-11: Write a program to perform left factoring for a given grammar
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+string commonPrefix(string a, string b) {
+    string prefix = "";
+    int len = min(a.length(), b.length());
+    for (int i = 0; i < len; i++) {
+        if (a[i] != b[i]) break;
+        prefix += a[i];
+    }
+    return prefix;
+}
+
+void leftFactor(string nonTerminal, vector<string> productions) {
+    map<string, vector<string>> groups;
+    for (string prod : productions) {
+        string key(1, prod[0]);
+        groups[key].push_back(prod);
+    }
+
+    bool factored = false;
+    string newNT = nonTerminal + "'";
+
+    cout << nonTerminal << " -> ";
+
+    for (auto group : groups) {
+        if (group.second.size() > 1) {
+            string prefix = group.second[0];
+            for (int i = 1; i < group.second.size(); i++)
+                prefix = commonPrefix(prefix, group.second[i]);
+
+            cout << prefix << newNT << " | ";
+            factored = true;
+
+            cout << "\n" << newNT << " -> ";
+            for (int i = 0; i < group.second.size(); i++) {
+                string suffix = group.second[i].substr(prefix.length());
+                if (suffix == "")
+                    cout << "eps";
+                else
+                    cout << suffix;
+
+                if (i != group.second.size() - 1)
+                    cout << " | ";
+            }
+        } else {
+            cout << group.second[0] << " | ";
+        }
+    }
+    cout << endl;
+    if (!factored)
+        cout << "No left factoring needed.\n";
+}
+
+int main() {
+    cout << "Left Factoring Result:\n\n";
+    leftFactor("A", {"abc", "abd", "aef", "b"});
+}
+
+
+
+ex-12: Write a program to find FIRST values from a given set of production.
+
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+map<string, vector<string>> productions;
+map<string, set<string>> FIRST;
+set<string> terminals;
+set<string> nonTerminals;
+
+bool isTerminal(string s) {
+    return terminals.count(s);
+}
+
+vector<string> splitSymbols(string prod) {
+    vector<string> symbols;
+    string temp;
+    for (char ch : prod) {
+        if (ch == ' ') {
+            if (!temp.empty()) {
+                symbols.push_back(temp);
+                temp.clear();
+            }
+        } else {
+            temp += ch;
+        }
+    }
+    if (!temp.empty()) symbols.push_back(temp);
+    return symbols;
+}
+
+set<string> findFirst(string symbol) {
+    if (isTerminal(symbol)) {
+        return {symbol};
+    }
+
+    if (FIRST.count(symbol)) return FIRST[symbol];
+
+    set<string> result;
+
+    for (string prod : productions[symbol]) {
+        if (prod == "eps") {
+            result.insert("eps");
+            continue;
+        }
+
+        vector<string> symbols = splitSymbols(prod);
+
+        bool epsilonInAll = true;
+
+        for (string s : symbols) {
+            set<string> temp = findFirst(s);
+            for (string t : temp)
+                if (t != "eps") result.insert(t);
+
+            if (temp.find("eps") == temp.end()) {
+                epsilonInAll = false;
+                break;
+            }
+        }
+
+        if (epsilonInAll) result.insert("eps");
+    }
+
+    return FIRST[symbol] = result;
+}
+
+int main() {
+    productions["E"]  = {"T E'"};
+    productions["E'"] = {"+ T E'", "eps"};
+    productions["T"]  = {"F T'"};
+    productions["T'"] = {"* F T'", "eps"};
+    productions["F"]  = {"( E )", "id"};
+
+    nonTerminals = {"E", "E'", "T", "T'", "F"};
+    terminals = {"+", "*", "(", ")", "id"};
+
+    for (string nt : nonTerminals) {
+        set<string> firstSet = findFirst(nt);
+        cout << "FIRST(" << nt << ") = { ";
+        for (string x : firstSet) cout << x << " ";
+        cout << "}" << endl;
+    }
+    return 0;
+}
+
+
+
+
+ex-13: Write a program to find FOLLOW values from a given set of production.
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+map<string, vector<string>> productions;
+map<string, set<string>> FIRST;
+map<string, set<string>> FOLLOW;
+set<string> terminals;
+set<string> nonTerminals;
+
+bool isTerminal(string s) {
+    return terminals.count(s);
+}
+
+vector<string> splitSymbols(string prod) {
+    vector<string> symbols;
+    string temp;
+    for (char ch : prod) {
+        if (ch == ' ') {
+            if (!temp.empty()) {
+                symbols.push_back(temp);
+                temp.clear();
+            }
+        } else {
+            temp += ch;
+        }
+    }
+    if (!temp.empty()) 
+        symbols.push_back(temp);
+    return symbols;
+}
+
+void computeFollow() {
+    string startSymbol = "E";
+    FOLLOW[startSymbol].insert("$");
+    bool changed = true;
+
+    while (changed) {
+        changed = false;
+        for (auto& pair : productions) {
+            string lhs = pair.first;
+
+            for (string rhs : pair.second) {
+                vector<string> symbols = splitSymbols(rhs);
+                
+                int n = symbols.size();
+                for (int i = 0; i < n; ++i) {
+                    string B = symbols[i];
+                    if (!nonTerminals.count(B)) 
+                        continue;
+                        
+                    set<string> before = FOLLOW[B];
+
+                    bool allEps = true;
+                    for (int j = i + 1; j < n; ++j) {
+                        for (string s : FIRST[symbols[j]])
+                            if (s != "eps") 
+                                FOLLOW[B].insert(s);
+                        if (FIRST[symbols[j]].count("eps") == 0) {
+                            allEps = false;
+                            break;
+                        }
+                    }
+                    if (i == n - 1 || allEps) {
+                        for (string s : FOLLOW[lhs])
+                            FOLLOW[B].insert(s);
+                    }
+                    if (FOLLOW[B].size() != before.size())
+                        changed = true;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    productions["E"]  = {"T E'"};
+    productions["E'"] = {"+ T E'", "eps"};
+    productions["T"]  = {"F T'"};
+    productions["T'"] = {"* F T'", "eps"};
+    productions["F"]  = {"( E )", "id"};
+
+    nonTerminals = {"E", "E'", "T", "T'", "F"};
+    terminals = {"+", "*", "(", ")", "id"};
+
+    FIRST["E"]  = {"(", "id"};
+    FIRST["E'"] = {"+", "eps"};
+    FIRST["T"]  = {"(", "id"};
+    FIRST["T'"] = {"*", "eps"};
+    FIRST["F"]  = {"(", "id"};
+
+    computeFollow();
+
+    for (string nt : nonTerminals) {
+        cout << "FOLLOW(" << nt << ") = { ";
+        for (string s : FOLLOW[nt]) 
+            cout << s << " ";
+        cout << "}" << endl;
+    }
+}
+
+
+
+ex-14: Write a program to eliminating left recursion for a given grammar.
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void eliminateLeftRecursion(string nonTerminal, vector<string> productions) {
+    vector<string> alpha;
+    vector<string> beta;
+
+    for (string prod : productions) {
+        if (prod[0] == nonTerminal[0]) {
+            alpha.push_back(prod.substr(1));
+        } else {
+            beta.push_back(prod);
+        }
+    }
+
+    if (alpha.empty()) {
+        cout << "No left recursion in " << nonTerminal << endl;
+        return;
+    }
+
+    string newNT = nonTerminal + "'";
+
+    cout << nonTerminal << " -> ";
+    for (int i = 0; i < beta.size(); i++) {
+        cout << beta[i] << newNT;
+        if (i != beta.size() - 1) cout << " | ";
+    }
+    cout << endl;
+
+    cout << newNT << " -> ";
+    for (int i = 0; i < alpha.size(); i++) {
+        cout << alpha[i] << newNT << " | ";
+    }
+    cout << "eps" << endl << endl;
+}
+
+int main() {
+    cout << "Eliminating Left Recursion:\n\n";
+
+    eliminateLeftRecursion("A", {"Aabb", "BC"});
+    eliminateLeftRecursion("B", {"Bca", "C"});
+
+    return 0;
+}
